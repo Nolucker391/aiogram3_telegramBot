@@ -1,13 +1,19 @@
 import asyncio #позволит запускать асинхронные функции
 
-from aiogram import Bot, Dispatcher, F
-from aiogram.enums import ParseMode
+from aiogram import Bot, Dispatcher
 
-
-bot = Bot('7183072253:AAF6GrqsebhJU-9W6TE3rXyic1iSiOo70AQ', parse_mode=ParseMode.HTML)
-dp = Dispatcher()
+from handlers.default_handlers import start_command
+from callbacks.login_and_moove_callbacks import login
+from config_data.config_reader import BOT_TOKEN
 
 async def main():
+    bot = Bot(BOT_TOKEN, parse_mode='HTML')
+    dp = Dispatcher()
+
+    dp.include_routers(
+        start_command.router,
+        login.router
+    )
     # Чтобы если вдруг бот будет выключенном состоянии и ему отправят 30000 соощений start
     # - бот их не выводил и поэтому применяем bot.delete_webhook
     await bot.delete_webhook(drop_pending_updates=True)
