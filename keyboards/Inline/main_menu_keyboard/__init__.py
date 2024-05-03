@@ -1,0 +1,1 @@
+from . import menu_of_student
