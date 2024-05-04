@@ -1,23 +1,24 @@
 from aiogram import types
 from aiogram.fsm.context import FSMContext
 from aiogram.types import Message
-from aiogram import Router
+from aiogram import Router, Bot
 
 from aiogram.filters import Command
 from keyboards.Inline.main_menu_keyboard.menu_of_student import student_menu
 from role_decorator.main import role_decorator
 from role_decorator.users import User
-from io import BytesIO
+from utils.states import Form
 
 router = Router()
 
+
 @router.message(Command('menu'))
 @role_decorator([User.student, User.admin])
-async def main_menu(message: Message) -> None:
+async def main_menu(message: Message, state: FSMContext) -> None:
 
     builder_inline_of_student = student_menu()
     constructor = '_' * 31
-    photo_path = '/Users/skillboxstudy/PycharmProjects/aiogram3_telegramBot/skb-logo.png'
+    photo_path = 'images/logo_main_menu/skb-logo.png'
 
     await message.answer_photo(
             photo=types.FSInputFile(path=photo_path),
@@ -27,6 +28,8 @@ async def main_menu(message: Message) -> None:
                     f'направление: \n',
             reply_markup=builder_inline_of_student.as_markup()
     )
+
+    await state.set_state(Form.menu)
 
     # await message.answer(
     #     text=
@@ -53,3 +56,13 @@ async def main_menu(message: Message) -> None:
     #         f'Информация: \n',
     #     reply_markup=builder_inline_of_admin.as_markup()
     # )
+
+
+@router.message(Form.menu)
+async def menu(message: Message, state: FSMContext):
+    if message.text:
+        await message.delete()
+        show_alert = True
+        print("show_alert =", show_alert)
+        await message.answer(text='Выберите действие из списка!', show_alert=True)
+

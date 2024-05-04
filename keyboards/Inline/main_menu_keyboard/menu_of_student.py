@@ -6,7 +6,7 @@ def student_menu():
 
     builder_inline.row(
         types.InlineKeyboardButton(text='заработать скиллкоины', callback_data='earn_skillcoins'),
-        types.InlineKeyboardButton(text='списать скиллкоины', callback_data='write_skillcoins')
+        types.InlineKeyboardButton(text='списать скиллкоины', callback_data='spend_skillcoins')
     )
     builder_inline.row(
         types.InlineKeyboardButton(text='посмотреть баланс', callback_data='check_balance'),

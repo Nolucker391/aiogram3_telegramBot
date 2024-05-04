@@ -8,7 +8,8 @@ from keyboards.Reply.send_contact_phone.phone_number_reply import contact_functi
 
 router = Router()
 
-@router.callback_query(Form.start, F.data == 'Login')
+
+@router.callback_query(Form.authorization, F.data == 'Login')
 async def send_back_button(callback: types.CallbackQuery, state: FSMContext):
     await callback.message.delete()
 
@@ -21,10 +22,10 @@ async def send_back_button(callback: types.CallbackQuery, state: FSMContext):
         reply_markup=builder_contact.as_markup(resize_keyboard=True),
     )
 
-    await state.set_state(Form.login)
+    await state.set_state(Form.get_contact)
 
 
-@router.message(Form.login)
+@router.message(Form.get_contact)
 async def phone_number_function(message: Message, state: FSMContext):
 
     text_for_user = ('Вы успешно вошли в систему!\n'

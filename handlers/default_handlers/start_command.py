@@ -8,6 +8,7 @@ from utils.states import Form
 
 router = Router()
 
+
 @router.message(CommandStart())
 async def start(message: Message, state: FSMContext):
     constructor = '_' * 33
@@ -18,4 +19,4 @@ async def start(message: Message, state: FSMContext):
 
     await message.answer(text=content_text, reply_markup=start_keyboard())
 
-    await state.set_state(Form.start)
+    await state.set_state(Form.authorization)
